@@ -187,7 +187,7 @@ export default function About() {
     relative
     isolate
     overflow-hidden
-    bg-slate-50
+    bg-slate-200
     py-24
     md:py-32
     dark:bg-[#0b1020]

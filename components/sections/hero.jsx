@@ -222,17 +222,17 @@ export default function Hero() {
   })
 
   const socialLinks = [
-  {
-    name: "GitHub",
-    href: "https://github.com/Umair-Alvi",
-    icon: Github,
-  },
-  {
-    name: "LinkedIn",
-    href: "https://www.linkedin.com/in/umair-akram-dev/",
-    icon: Linkedin,
-  },
-]
+    {
+      name: "GitHub",
+      href: "https://github.com/Umair-Alvi",
+      icon: Github,
+    },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/in/umair-akram-dev/",
+      icon: Linkedin,
+    },
+  ]
 
   /* ---------------------------------------------
      Parallax transforms
@@ -460,7 +460,7 @@ export default function Hero() {
             style={!isMobile ? { x: textX, y: textY } : undefined}
             className="relative z-20"
           >
-            {/* Availability */}
+            {/* Availability — Odoo primary, others secondary */}
 
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -511,26 +511,29 @@ export default function Hero() {
                 />
               </span>
 
-              Available for Odoo Projects & Opportunities
+              Available for Odoo Development
+              <span className="text-emerald-500/50 dark:text-emerald-400/40">
+                · also Shopify &amp; Frontend
+              </span>
             </motion.div>
 
-            {/* Small title */}
+            {/* Small title — single focused word */}
 
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="
-                mb-4
+                mb-5
                 text-sm
                 font-bold
                 uppercase
                 tracking-[0.35em]
-                text-violet-600
+                text-violet-500
                 dark:text-violet-400
               "
             >
-              Odoo Developer
+              ODOO DEVELOPER
             </motion.p>
 
             {/* Name */}
@@ -569,7 +572,7 @@ export default function Hero() {
               </span>
             </motion.h1>
 
-            {/* Roles */}
+            {/* Roles — Odoo emphasized, Shopify/Frontend supporting */}
 
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -579,21 +582,36 @@ export default function Hero() {
                 mt-7
                 flex
                 flex-wrap
-                items-center
+                items-baseline
                 gap-x-3
                 gap-y-2
-                text-lg
-                font-bold
-                text-slate-800
-                dark:text-slate-100
-                sm:text-xl
               "
             >
-              <span>Odoo Developer</span>
+              <span
+                className="
+                  text-lg
+                  font-black
+                  text-slate-900
+                  dark:text-white
+                  sm:text-2xl
+                "
+              >
+                Odoo Developer
+              </span>
 
-              <span className="text-violet-500">•</span>
+              <span className="text-violet-400 dark:text-violet-500">•</span>
 
-              <span>Frontend Developer</span>
+              <span
+                className="
+                  text-sm
+                  font-medium
+                  text-slate-500
+                  dark:text-slate-400
+                  sm:text-base
+                "
+              >
+                Frontend &amp; Shopify Developer
+              </span>
             </motion.div>
 
             {/* Description */}
@@ -612,13 +630,12 @@ export default function Hero() {
                 sm:text-lg
               "
             >
-              I build custom Odoo solutions, business workflows and
-              automation that help companies manage their operations more
-              efficiently — backed by strong experience in modern frontend
-              development.
+              I build custom Odoo solutions and business automation, backed
+              by strong frontend expertise and hands-on experience building
+              Shopify stores.
             </motion.p>
 
-            {/* Skill tags */}
+            {/* Skill tags — Odoo stack primary, others secondary */}
 
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -635,14 +652,17 @@ export default function Hero() {
                 {
                   name: "Python",
                   icon: Code2,
+                  primary: true,
                 },
                 {
                   name: "XML",
                   icon: FileText,
+                  primary: true,
                 },
                 {
                   name: "PostgreSQL",
                   icon: Database,
+                  primary: true,
                 },
                 {
                   name: "Next.js",
@@ -775,62 +795,63 @@ export default function Hero() {
                 Download CV
               </motion.a>
             </motion.div>
+
             <div className="flex flex-wrap items-center gap-3 pt-6">
-  {socialLinks.map((social) => {
-    const Icon = social.icon
+              {socialLinks.map((social) => {
+                const Icon = social.icon
 
-    return (
-      <motion.a
-        key={social.name}
-        href={social.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ y: -4, scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="
-          group
-          flex items-center gap-2
-          rounded-xl
-          border border-slate-200
-          bg-white/70
-          px-4 py-2.5
-          text-sm font-medium
-          text-slate-700
-          shadow-sm
-          backdrop-blur
-          transition-all
+                return (
+                  <motion.a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -4, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="
+                      group
+                      flex items-center gap-2
+                      rounded-xl
+                      border border-slate-200
+                      bg-white/70
+                      px-4 py-2.5
+                      text-sm font-medium
+                      text-slate-700
+                      shadow-sm
+                      backdrop-blur
+                      transition-all
 
-          hover:border-blue-400
-          hover:text-blue-600
-          hover:shadow-lg
-          hover:shadow-blue-500/10
+                      hover:border-blue-400
+                      hover:text-blue-600
+                      hover:shadow-lg
+                      hover:shadow-blue-500/10
 
-          dark:border-white/10
-          dark:bg-white/[0.03]
-          dark:text-slate-300
-          dark:hover:border-blue-500/40
-          dark:hover:bg-blue-500/10
-          dark:hover:text-blue-400
-        "
-      >
-        <Icon className="h-4 w-4 transition-transform group-hover:scale-110" />
+                      dark:border-white/10
+                      dark:bg-white/[0.03]
+                      dark:text-slate-300
+                      dark:hover:border-blue-500/40
+                      dark:hover:bg-blue-500/10
+                      dark:hover:text-blue-400
+                    "
+                  >
+                    <Icon className="h-4 w-4 transition-transform group-hover:scale-110" />
 
-        <span>{social.name}</span>
+                    <span>{social.name}</span>
 
-        <ExternalLink
-          className="
-            h-3.5 w-3.5
-            opacity-0
-            -translate-x-1
-            transition-all
-            group-hover:translate-x-0
-            group-hover:opacity-100
-          "
-        />
-      </motion.a>
-    )
-  })}
-</div>
+                    <ExternalLink
+                      className="
+                        h-3.5 w-3.5
+                        opacity-0
+                        -translate-x-1
+                        transition-all
+                        group-hover:translate-x-0
+                        group-hover:opacity-100
+                      "
+                    />
+                  </motion.a>
+                )
+              })}
+            </div>
           </motion.div>
 
           {/* =================================================
