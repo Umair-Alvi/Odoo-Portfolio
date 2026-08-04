@@ -356,25 +356,51 @@ export default function Contact() {
   ======================================================= */
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault()
+  setIsLoading(true)
+  setFormStatus("")
 
-    setIsLoading(true)
-    setFormStatus("")
+  const formData = new FormData(e.target)
 
-    // Temporary frontend simulation.
-    // Connect your API / Resend / Formspree here later.
+  formData.append(
+    "access_key",
+    "0af4a512-57f4-4c56-82c2-b84aca09a196"
+  )
+
+  formData.append(
+    "subject",
+    "New Portfolio Contact Message"
+  )
+
+  formData.append(
+    "from_name",
+    "Umair Portfolio"
+  )
+
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    })
+
+    const data = await response.json()
+
+    if (data.success) {
+      setFormStatus("Message sent successfully! I'll get back to you soon.")
+      e.target.reset()
+    } else {
+      setFormStatus("Something went wrong. Please try again.")
+    }
+  } catch (error) {
+    setFormStatus("Unable to send message. Please try again.")
+  } finally {
+    setIsLoading(false)
 
     setTimeout(() => {
-      setFormStatus("Message ready to send!")
-      setIsLoading(false)
-
-      e.target.reset()
-
-      setTimeout(() => {
-        setFormStatus("")
-      }, 3500)
-    }, 900)
+      setFormStatus("")
+    }, 5000)
   }
+}
 
   return (
     <section
