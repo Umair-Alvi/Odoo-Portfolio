@@ -147,4 +147,65 @@ export const projectsData = [
     solution: "Customized CSS and Liquid templates for consistent branding",
     results: "Successfully launched with 200+ products and positive client feedback",
   },
+
+  {
+  id: 6,
+  slug: "odoo-hr-time-off-automation",
+  title: "Odoo HR & Time Off Automation",
+
+  shortDesc:
+    "Custom Odoo HR and Time Off automation with employee, contract, and leave allocation rules.",
+
+  fullDesc:
+    "Customized Odoo HR and Time Off management to automate employee leave allocation based on joining date, contract information, employee details, and defined HR policies. The project included custom fields, conditional leave rules, and automated yearly leave allocation for different types of employee leaves.",
+
+  mainImage: "/odoo-hr-time-off.png",
+
+  images: [
+    "/odoo-hr-time-off.png",
+  ],
+
+  tech: [
+    "Odoo 18",
+    "Python",
+    "XML",
+    "Odoo ORM",
+    "PostgreSQL",
+  ],
+
+  category: "odoo",
+
+  liveUrl: null,
+
+  githubUrl:
+    "https://github.com/Umair-Alvi/odoo-custom-module-by-umair",
+
+  client: "Confidential",
+
+  duration: "Custom Development",
+
+  year: "2026",
+
+  features: [
+    "Custom Religion field added to Employee Private Information",
+    "Custom Annual Type field added to Employee Contract",
+    "Joining date based leave eligibility",
+    "Automated Annual Leave allocation",
+    "Sick Leave rules based on defined conditions",
+    "Hajj Leave eligibility and allocation",
+    "Maternity and Paternity Leave rules",
+    "Bereavement, Study and Family Care Leave rules",
+    "Conditional leave allocation based on HR policies",
+    "Automatic yearly leave allocation",
+  ],
+
+  challenges:
+    "The HR department required different leave rules and eligibility conditions based on employee joining date, contract information, religion, and specific company policies.",
+
+  solution:
+    "Customized Odoo HR and Time Off functionality by adding required employee and contract fields and implementing automated business logic for leave eligibility, allocation, and yearly leave management.",
+
+  results:
+    "Reduced manual HR work by automating employee leave eligibility and allocation according to the company's defined leave policies.",
+}
 ]

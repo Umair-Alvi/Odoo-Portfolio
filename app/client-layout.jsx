@@ -5,6 +5,8 @@ import { Geist } from "next/font/google"
 import Navbar from "@/components/navbar"
 import ScrollProgress from "@/components/scroll-progress"
 import CursorTrail from "@/components/cursor-trail"
+import Contact from "@/components/sections/contact"
+import Footer from "@/components/footer"
 
 const geist = Geist({ subsets: ["latin"] })
 
@@ -43,6 +45,9 @@ export default function ClientLayout({ children }) {
       <CursorTrail />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>{children}</main>
+      <Contact />
+      <Footer   />
+
     </>
   )
 }
