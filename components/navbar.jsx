@@ -26,6 +26,10 @@ export default function Navbar({ theme, toggleTheme }) {
       href: "/frontend",
     },
     {
+      name: "PROJECT",
+      href: "/projects",
+    },
+    {
       name: "Contact",
       href: "/#contact",
     },

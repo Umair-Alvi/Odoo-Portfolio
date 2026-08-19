@@ -21,7 +21,7 @@ export default function Home() {
       <OdooModulesAreas />
       <OdooTechnicalSkills />
       <HowIWork />
-      <Projects />
+      <Projects category="odoo" limit={4} viewMoreUrl="/projects?category=odoo" />
       <Experience />
       <WhyWorkWithMe  />
       {/* <Contact /> */}

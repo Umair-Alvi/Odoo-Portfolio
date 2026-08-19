@@ -17,7 +17,7 @@ export default function FrontendPage() {
       <FrontendServices />
 
       {/* Your Frontend Projects section can come here */}
-      <Projects />
+      <Projects category="frontend" limit={4} viewMoreUrl="/projects?category=frontend" />
 
       <FrontendHowIWork />
 

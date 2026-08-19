@@ -25,7 +25,7 @@ export default function HomePage() {
       <FeaturedWordPress />
 
       <HomeStats />
-       <Projects />
+      <Projects category="all" limit={4} viewMoreUrl="/projects" />
       <HowIWork />
 
       <HomeCTA />

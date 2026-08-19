@@ -17,7 +17,7 @@ export default function ShopifyPage() {
 
       <ShopifySkills />
 
-      <Projects />
+      <Projects category="shopify" limit={4} viewMoreUrl="/projects?category=shopify" />
 
       <ShopifyHowIWork />
 

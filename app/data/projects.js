@@ -7,6 +7,8 @@ export const projectsData = [
     fullDesc:
       "A comprehensive e-commerce solution built for a skincare brand. The platform features custom product layouts, responsive design, and optimized user experience. Implemented WooCommerce with custom payment gateways and shipping methods tailored for the Pakistani market. This project involved complete website development from scratch including theme customization, plugin integration, and performance optimization.",
     mainImage: "/skincare-store-ecommerce.jpg",
+    hoverImage: "/phone-repair-shop-booking.jpg",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: ["/skincare-store-ecommerce.jpg"],
     tech: ["WordPress", "WooCommerce", "Elementor", "SEO", "Custom CSS"],
     category: "wordpress",
@@ -37,9 +39,10 @@ export const projectsData = [
     fullDesc:
       "A modern weather application built with React.js that provides real-time weather information for any location worldwide. Features include current conditions, 5-day forecast, and beautiful weather animations. The app uses OpenWeather API to fetch live data and displays it in an intuitive, user-friendly interface.",
     mainImage: "/weather-app-dashboard.png",
+    hoverImage: "/ecommerce-store-products.jpg",
     images: ["/weather-app-dashboard.png"],
     tech: ["React.js", "Weather API", "Tailwind CSS", "JavaScript"],
-    category: "react",
+    category: "frontend",
     liveUrl: null,
     githubUrl: "#",
     client: "Personal Project",
@@ -125,6 +128,7 @@ export const projectsData = [
     fullDesc:
       "A complete Shopify store setup for Tausi, a fashion brand. The project involved theme customization, product organization, collection setup, and brand styling. Optimized for mobile shopping and configured with payment gateways and shipping zones for smooth operations.",
     mainImage: "/fashion-clothing-store.png",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     images: ["/fashion-clothing-store.png"],
     tech: ["Shopify", "Liquid", "CSS", "Theme Editor"],
     category: "shopify",

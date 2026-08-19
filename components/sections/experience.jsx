@@ -537,7 +537,7 @@ export default function Experience() {
     {
       title: "Frontend Developer",
       company: "Kaspar Consulting",
-      period: "2023 - 2025",
+      period: "Jan 2024 - Aug2025",
       current: false,
       side: "right",
       icon: Code2,

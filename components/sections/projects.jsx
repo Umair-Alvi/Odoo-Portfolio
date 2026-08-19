@@ -1,11 +1,12 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import {
   ArrowUpRight,
+  ChevronDown,
   ExternalLink,
   Github,
   Layers3,
@@ -13,6 +14,25 @@ import {
 } from "lucide-react"
 
 import { projectsData } from "@/app/data/projects"
+
+const CATEGORY_LABELS = {
+  odoo: "Odoo",
+  shopify: "Shopify",
+  frontend: "Frontend",
+  wordpress: "WordPress",
+  other: "Other",
+}
+
+function normalizeCategory(value) {
+  return (value || "other").toLowerCase()
+}
+
+function getCategoryLabel(categoryKey) {
+  return (
+    CATEGORY_LABELS[categoryKey] ||
+    categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)
+  )
+}
 
 /* =========================================================
    PROJECT CARD
@@ -201,11 +221,34 @@ function ProjectCard({ project, index }) {
             "
             className="
               object-cover
-              transition-transform
+              transition-all
               duration-700
               group-hover:scale-105
             "
           />
+
+          {project.hoverImage && (
+            <Image
+              src={project.hoverImage}
+              alt={`${project.title} hover preview`}
+              fill
+              sizes="
+                (max-width: 768px) 100vw,
+                (max-width: 1200px) 50vw,
+                600px
+              "
+              className="
+                absolute
+                inset-0
+                object-cover
+                opacity-0
+                transition-all
+                duration-700
+                group-hover:opacity-100
+                group-hover:scale-105
+              "
+            />
+          )}
 
           <div
             className="
@@ -238,7 +281,7 @@ function ProjectCard({ project, index }) {
               backdrop-blur-md
             "
           >
-            {project.category}
+            {project.categoryLabel}
           </div>
         </div>
 
@@ -306,12 +349,83 @@ function ProjectCard({ project, index }) {
 
           {/* Buttons */}
 
-          <div className="flex flex-col gap-2.5 sm:flex-row">
+          <div className="flex flex-col gap-2">
+            
+
+            {(hasLiveDemo || hasGithub) && (
+              <div className="flex gap-2">
+                {hasLiveDemo && (
+                  <a
+                    href={project.links.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      inline-flex
+                      flex-1
+                      items-center
+                      justify-center
+                      gap-1.5
+                      rounded-xl
+                      border
+                      border-slate-200
+                      px-3
+                      py-2
+                      text-xs
+                      font-semibold
+                      text-slate-700
+                      transition-all
+                      hover:border-violet-400
+                      hover:text-violet-600
+
+                      dark:border-white/10
+                      dark:text-slate-300
+                      dark:hover:text-violet-400
+                    "
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Live Demo
+                  </a>
+                )}
+
+                {hasGithub && (
+                  <a
+                    href={project.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      inline-flex
+                      flex-1
+                      items-center
+                      justify-center
+                      gap-1.5
+                      rounded-xl
+                      border
+                      border-slate-200
+                      px-3
+                      py-2
+                      text-xs
+                      font-semibold
+                      text-slate-700
+                      transition-all
+                      hover:border-slate-400
+                      hover:text-slate-950
+
+                      dark:border-white/10
+                      dark:text-slate-300
+                      dark:hover:text-white
+                    "
+                  >
+                    <Github className="h-3.5 w-3.5" />
+                    Code
+                  </a>
+                )}
+              </div>
+            )}
             <Link
               href={`/projects/${project.slug}`}
               className="
                 flex
-                flex-1
+                w-full
                 items-center
                 justify-center
                 gap-2
@@ -320,7 +434,7 @@ function ProjectCard({ project, index }) {
                 from-violet-600
                 to-blue-600
                 px-4
-                py-3
+                py-2.5
                 text-sm
                 font-semibold
                 text-white
@@ -331,73 +445,8 @@ function ProjectCard({ project, index }) {
               "
             >
               View Case Study
-
               <ArrowUpRight className="h-4 w-4" />
             </Link>
-
-            {hasLiveDemo && (
-              <a
-                href={project.links.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-xl
-                  border
-                  border-slate-200
-                  px-4
-                  py-3
-                  text-sm
-                  font-semibold
-                  text-slate-700
-                  transition-all
-                  hover:border-violet-400
-                  hover:text-violet-600
-
-                  dark:border-white/10
-                  dark:text-slate-300
-                  dark:hover:text-violet-400
-                "
-              >
-                <ExternalLink className="h-4 w-4" />
-                Live
-              </a>
-            )}
-
-            {hasGithub && (
-              <a
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-xl
-                  border
-                  border-slate-200
-                  px-4
-                  py-3
-                  text-sm
-                  font-semibold
-                  text-slate-700
-                  transition-all
-                  hover:border-slate-400
-                  hover:text-slate-950
-
-                  dark:border-white/10
-                  dark:text-slate-300
-                  dark:hover:text-white
-                "
-              >
-                <Github className="h-4 w-4" />
-                Code
-              </a>
-            )}
           </div>
         </div>
       </div>
@@ -409,34 +458,62 @@ function ProjectCard({ project, index }) {
    PROJECTS
 ========================================================= */
 
-export default function Projects() {
-  const [activeFilter, setActiveFilter] = useState("All")
+export default function Projects({
+  category = "all",
+  limit = 4,
+  isMainPage = false,
+  onCategoryChange = null,
+  viewMoreUrl = null,
+}) {
+  const categoryProp = normalizeCategory(category)
+  const [activeFilter, setActiveFilter] = useState(categoryProp)
+
+  useEffect(() => {
+    setActiveFilter(categoryProp)
+  }, [categoryProp])
+
+  const handleFilterClick = (filterValue) => {
+    setActiveFilter(filterValue)
+    if (onCategoryChange) {
+      onCategoryChange(filterValue)
+    }
+  }
+
+  const effectiveViewMoreUrl = useMemo(() => {
+    if (viewMoreUrl) return viewMoreUrl
+    if (activeFilter === "all") return "/projects"
+    return `/projects?category=${activeFilter}`
+  }, [viewMoreUrl, activeFilter])
 
   /* ---------------------------------------------------------
      Normalize project data once
   --------------------------------------------------------- */
 
   const projects = useMemo(() => {
-    return projectsData.map((project) => ({
-      ...project,
+    return projectsData.map((project) => {
+      const categoryKey = normalizeCategory(project.category)
 
-      image: project.mainImage || "/placeholder.svg",
+      return {
+        ...project,
 
-      description:
-        project.shortDesc ||
-        "A modern digital solution built with scalable technologies.",
+        image: project.mainImage || "/placeholder.svg",
+        hoverImage: project.hoverImage || null,
 
-      tags: project.tech || [],
+        description:
+          project.shortDesc ||
+          "A modern digital solution built with scalable technologies.",
 
-      category:
-        project.category?.charAt(0).toUpperCase() +
-        project.category?.slice(1),
+        tags: project.tech || [],
 
-      links: {
-        github: project.githubUrl || "#",
-        live: project.liveUrl || "#",
-      },
-    }))
+        categoryKey,
+        categoryLabel: getCategoryLabel(categoryKey),
+
+        links: {
+          github: project.githubUrl || "#",
+          live: project.liveUrl || "#",
+        },
+      }
+    })
   }, [])
 
   /* ---------------------------------------------------------
@@ -446,36 +523,45 @@ export default function Projects() {
   const filters = [
     {
       label: "All",
-      value: "All",
+      value: "all",
     },
     {
       label: "Odoo",
-      value: "Odoo",
-    },
-    {
-      label: "Next.js",
-      value: "React",
+      value: "odoo",
     },
     {
       label: "Shopify",
-      value: "Shopify",
+      value: "shopify",
+    },
+    {
+      label: "Frontend",
+      value: "frontend",
     },
     {
       label: "WordPress",
-      value: "Wordpress",
+      value: "wordpress",
     },
     {
       label: "Other",
-      value: "Other",
+      value: "other",
     },
   ]
 
-  const filteredProjects =
-    activeFilter === "All"
+  const allMatchingProjects = useMemo(() => {
+    return activeFilter === "all"
       ? projects
       : projects.filter(
-          (project) => project.category === activeFilter
+          (project) => project.categoryKey === activeFilter
         )
+  }, [projects, activeFilter])
+
+  const filteredProjects = useMemo(() => {
+    if (isMainPage || typeof limit !== "number" || limit <= 0) {
+      return allMatchingProjects
+    }
+
+    return allMatchingProjects.slice(0, limit)
+  }, [allMatchingProjects, limit, isMainPage])
 
   return (
     <section
@@ -668,10 +754,6 @@ export default function Projects() {
             e-commerce projects I've worked on.
           </p>
 
-          {/* =================================================
-              FILTERS
-          ================================================= */}
-
           <div className="mt-9 flex flex-wrap justify-center gap-2">
             {filters.map((filter) => {
               const isActive = activeFilter === filter.value
@@ -680,7 +762,7 @@ export default function Projects() {
                 <motion.button
                   key={filter.value}
                   type="button"
-                  onClick={() => setActiveFilter(filter.value)}
+                  onClick={() => handleFilterClick(filter.value)}
                   whileHover={{
                     y: -2,
                   }}
@@ -742,7 +824,8 @@ export default function Projects() {
               grid
               grid-cols-1
               gap-7
-              md:grid-cols-2
+              sm:grid-cols-2
+              lg:grid-cols-4
               xl:gap-8
             "
           >
@@ -811,7 +894,7 @@ export default function Projects() {
 
             <button
               type="button"
-              onClick={() => setActiveFilter("All")}
+              onClick={() => handleFilterClick("all")}
               className="
                 mt-6
                 rounded-xl
@@ -827,6 +910,50 @@ export default function Projects() {
             >
               View all projects
             </button>
+          </motion.div>
+        )}
+
+        {!isMainPage && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="mt-10 flex justify-center"
+          >
+            <Link
+              href={effectiveViewMoreUrl}
+              className="
+                inline-flex
+                items-center
+                gap-2
+                rounded-xl
+                border
+                border-violet-500/30
+                bg-violet-500/10
+                px-6
+                py-3
+                text-sm
+                font-semibold
+                text-violet-600
+                transition-all
+                hover:-translate-y-0.5
+                hover:border-violet-500
+                hover:bg-violet-600
+                hover:text-white
+                hover:shadow-lg
+                hover:shadow-violet-500/20
+
+                dark:border-violet-400/30
+                dark:bg-violet-400/10
+                dark:text-violet-400
+                dark:hover:bg-violet-600
+                dark:hover:text-white
+              "
+            >
+              View More
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </motion.div>
         )}
 
