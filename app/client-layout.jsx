@@ -7,6 +7,8 @@ import ScrollProgress from "@/components/scroll-progress"
 import CursorTrail from "@/components/cursor-trail"
 import Contact from "@/components/sections/contact"
 import Footer from "@/components/footer"
+import OdooShell from "@/components/odoo/OdooShell"
+import { ODOO_ONLY } from "@/lib/site-config"
 
 const geist = Geist({ subsets: ["latin"] })
 
@@ -38,6 +40,16 @@ export default function ClientLayout({ children }) {
   }
 
   if (!mounted) return null
+
+  if (ODOO_ONLY) {
+    return (
+      <div className={geist.className}>
+        <OdooShell theme={theme} toggleTheme={toggleTheme}>
+          {children}
+        </OdooShell>
+      </div>
+    )
+  }
 
   return (
     <>
