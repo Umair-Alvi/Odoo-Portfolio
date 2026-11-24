@@ -238,3 +238,95 @@
     opacity: 0.7;
   }
 }
+
+/* =====================================================================
+   ODOO PORTFOLIO THEME
+   Scoped to .odoo-site so the original pages keep their look.
+   Plum primary + teal accent on neutral surfaces.
+   ===================================================================== */
+
+.odoo-site {
+  --o-bg: #fafaf9;
+  --o-surface: #ffffff;
+  --o-surface-2: #f5f2f4;
+  --o-ink: #18171c;
+  --o-ink-2: #4a4852;
+  --o-ink-3: #77747f;
+  --o-line: #e8e4e7;
+  --o-brand: #6b3f63;
+  --o-brand-strong: #56304f;
+  --o-brand-ink: #ffffff;
+  --o-teal: #0f766e;
+  --o-ring: rgba(107, 63, 99, 0.35);
+  color-scheme: light;
+}
+
+.dark .odoo-site,
+.odoo-site.dark {
+  --o-bg: #0e0f13;
+  --o-surface: #15161c;
+  --o-surface-2: #1c1d25;
+  --o-ink: #ececf0;
+  --o-ink-2: #b6b4bf;
+  --o-ink-3: #8a8794;
+  --o-line: #2a2a34;
+  --o-brand: #d4a5c9;
+  --o-brand-strong: #e6c1dc;
+  --o-brand-ink: #1a0f18;
+  --o-teal: #5fc9bd;
+  --o-ring: rgba(212, 165, 201, 0.35);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-o-bg: var(--o-bg);
+  --color-o-surface: var(--o-surface);
+  --color-o-surface-2: var(--o-surface-2);
+  --color-o-ink: var(--o-ink);
+  --color-o-ink-2: var(--o-ink-2);
+  --color-o-ink-3: var(--o-ink-3);
+  --color-o-line: var(--o-line);
+  --color-o-brand: var(--o-brand);
+  --color-o-brand-strong: var(--o-brand-strong);
+  --color-o-brand-ink: var(--o-brand-ink);
+  --color-o-teal: var(--o-teal);
+}
+
+.odoo-site {
+  background: var(--o-bg);
+  color: var(--o-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Undo the global decorative link underline and blue input glow inside the Odoo site */
+.odoo-site a::after {
+  content: none;
+}
+
+.odoo-site input:focus,
+.odoo-site textarea:focus {
+  box-shadow: 0 0 0 3px var(--o-ring);
+}
+
+.odoo-site ::selection {
+  background: var(--o-brand);
+  color: var(--o-brand-ink);
+}
+
+.odoo-site .o-grid-bg {
+  background-image: linear-gradient(to right, var(--o-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--o-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+html:has(.odoo-site) {
+  scrollbar-color: #8a6a83 transparent;
+}
+html:has(.odoo-site) ::-webkit-scrollbar-track {
+  background: transparent;
+}
+html:has(.odoo-site) ::-webkit-scrollbar-thumb {
+  background: #8a6a83;
+  background-clip: content-box;
+}

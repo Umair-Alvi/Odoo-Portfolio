@@ -1,3 +1,5 @@
+import { odooCaseStudies } from "./odoo-case-studies"
+
 export const projectsData = [
   {
     id: 1,
@@ -152,118 +154,15 @@ export const projectsData = [
     results: "Successfully launched with 200+ products and positive client feedback",
   },
 
-  {
-  id: 6,
-  slug: "odoo-hr-time-off-automation",
-  title: "Odoo HR & Time Off Automation",
-
-  shortDesc:
-    "Custom Odoo HR and Time Off automation with employee, contract, and leave allocation rules.",
-
-  fullDesc:
-    "Customized Odoo HR and Time Off management to automate employee leave allocation based on joining date, contract information, employee details, and defined HR policies. The project included custom fields, conditional leave rules, and automated yearly leave allocation for different types of employee leaves.",
-
-  mainImage: "/odoo-hr-time-off.png",
-
-  images: [
-    "/odoo-hr-time-off.png",
-  ],
-
-  tech: [
-    "Odoo 18",
-    "Python",
-    "XML",
-    "Odoo ORM",
-    "PostgreSQL",
-  ],
-
-  category: "odoo",
-
-  liveUrl: null,
-
-  githubUrl:
-    "https://github.com/Umair-Alvi/odoo-custom-module-by-umair",
-
-  client: "Confidential",
-
-  duration: "Custom Development",
-
-  year: "2026",
-
-  features: [
-    "Custom Religion field added to Employee Private Information",
-    "Custom Annual Type field added to Employee Contract",
-    "Joining date based leave eligibility",
-    "Automated Annual Leave allocation",
-    "Sick Leave rules based on defined conditions",
-    "Hajj Leave eligibility and allocation",
-    "Maternity and Paternity Leave rules",
-    "Bereavement, Study and Family Care Leave rules",
-    "Conditional leave allocation based on HR policies",
-    "Automatic yearly leave allocation",
-  ],
-
-  challenges:
-    "The HR department required different leave rules and eligibility conditions based on employee joining date, contract information, religion, and specific company policies.",
-
-  solution:
-    "Customized Odoo HR and Time Off functionality by adding required employee and contract fields and implementing automated business logic for leave eligibility, allocation, and yearly leave management.",
-
-  results:
-    "Reduced manual HR work by automating employee leave eligibility and allocation according to the company's defined leave policies.",
-},
-
-{
-  id: 7,
-  slug: "odoo-18-petty-cash-expense-governance",
-  title: "Odoo 18 Petty Cash & Expense Governance",
-  shortDesc:
-    "Custom Odoo 18 petty cash and expense management module with real-time balance validation, receipt enforcement, VAT compliance, RBAC, and automated accounting synchronization.",
-  fullDesc:
-    "Developed a custom Odoo 18 Petty Cash and Expense Governance module to improve financial control and expense management. The solution introduced real-time petty cash balance tracking, mandatory receipt validation, VAT and tax compliance checks, role-based access controls, employee cash journal mapping, analytic budget synchronization, and bi-directional navigation between expenses and accounting journal entries.",
-  mainImage: "/expense_custom_module (4).png",
-  images: [
-    "/expense_custom_module (4).png",
-    "/expense_custom_module (3).png",
-    "/expense_custom_module (2).png",
-    "/expense_custom_module (1).png",
-  ],
-  tech: [
-    "Odoo 18",
-    "Python",
-    "XML",
-    "Odoo ORM",
-    "PostgreSQL",
-    "QWeb",
-  ],
-  category: "odoo",
-  liveUrl: null,
-  githubUrl:
-    "https://github.com/Umair-Alvi/odoo-custom-module-by-umair",
-  client: "Confidential",
-  duration: "Custom Development",
-  year: "2026",
-  features: [
-    "Real-time petty cash balance tracking",
-    "Petty cash overspending prevention",
-    "Mandatory receipt attachment validation",
-    "VAT and tax compliance enforcement",
-    "Vendor Bill and VAT number validation",
-    "Custom Role-Based Access Control (RBAC)",
-    "Employee-specific cash journal mapping",
-    "Automated analytic budget synchronization",
-    "Real-time budget availability checking",
-    "Bi-directional Expense and Accounting navigation",
-    "Custom Accounting Journal Entry smart button",
-    "Integration with HR Expense and Accounting modules",
-  ],
-  challenges:
-    "The client required stronger financial governance within Odoo because standard Expenses did not provide live petty cash balance validation, mandatory receipt enforcement, VAT compliance checks, granular access control, or direct synchronization between employee cash journals and analytic budget lines.",
-  solution:
-    "Extended Odoo 18 HR Expense, Expense Sheet, Accounting, HR, and Budget functionality by developing a custom module with real-time petty cash calculations, expense receipt validation, VAT constraints, granular security groups, employee journal mapping, budget validation, analytic data synchronization, and smart navigation between expenses and journal entries.",
-  results:
-    "Improved financial control by preventing petty cash overdrafts, blocking unreceipted expenses, enforcing VAT requirements, restricting sensitive accounting fields, and reducing manual reconciliation through automated employee journal and analytic budget synchronization.",
-}
-
-
+  // Odoo case studies live in ./odoo-case-studies.js
+  ...odooCaseStudies.map((cs) => ({
+    category: "odoo",
+    client: "Confidential",
+    duration: "Custom Development",
+    year: "2026",
+    liveUrl: null,
+    githubUrl: null,
+    ...cs,
+    mainImage: cs.images?.[0] || null,
+  })),
 ]

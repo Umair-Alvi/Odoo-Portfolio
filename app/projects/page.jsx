@@ -3,6 +3,8 @@
 import { Suspense } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import Projects from "@/components/sections/projects"
+import OdooProjectsPage from "@/components/odoo/OdooProjectsPage"
+import { ODOO_ONLY } from "@/lib/site-config"
 
 const VALID_CATEGORIES = ["all", "odoo", "shopify", "frontend", "wordpress", "other"]
 
@@ -43,8 +45,8 @@ function ProjectsPageContent() {
 
 export default function ProjectsPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white dark:bg-[#0a0f1d]" />}>
-      <ProjectsPageContent />
+    <Suspense fallback={<div className="min-h-screen" />}>
+      {ODOO_ONLY ? <OdooProjectsPage /> : <ProjectsPageContent />}
     </Suspense>
   )
 }
