@@ -163,6 +163,8 @@ export const projectsData = [
     liveUrl: null,
     githubUrl: null,
     ...cs,
-    mainImage: cs.images?.[0] || null,
+    // The original pages expect plain image paths
+    images: (cs.images || []).map((im) => (typeof im === "string" ? im : im.src)),
+    mainImage: (typeof cs.images?.[0] === "string" ? cs.images[0] : cs.images?.[0]?.src) || null,
   })),
 ]

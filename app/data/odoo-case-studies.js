@@ -32,11 +32,11 @@ export const odooCaseStudies = [
     title: "Analytic Budget & Commitment Control",
     icon: "ShieldCheck",
     system: "services",
-    modules: ["Accounting", "Analytic", "Purchase", "Expenses", "Attendance"],
+    modules: ["Accounting", "Analytic", "Purchase", "Expenses", "Attendance", "Petty Cash"],
     shortDesc:
       "Budget checks that block expenses, attendance costs and purchases that would exceed a project's analytic budget, including amounts already committed.",
     fullDesc:
-      "In a project-based services company every cost has to land on a project, and every project has a budget. Standard Odoo records the cost but does not stop a user from going over budget. I built a budget control layer that checks the project's analytic budget before an expense, attendance cost or purchase is confirmed, counting both actual spend and amounts already committed on open documents. A companion analytic dashboard shows each user only the projects they are allowed to see, with a \"Committed Not Used\" figure so managers know how much budget is reserved but not yet spent.",
+      "In a project-based services company every cost has to land on a project, and every project has a budget. Standard Odoo records the cost but does not stop a user from going over budget. I built a budget control layer that checks the project's budget (keyed on its analytic tag) before an expense, attendance cost or purchase is confirmed, counting both actual spend and amounts already committed on open documents. A companion analytic dashboard shows each user only the projects they are allowed to see, with a \"Committed Not Used\" figure so managers know how much budget is reserved but not yet spent.",
     features: [
       "Budget check on expenses, attendance costs and purchases before confirmation",
       "Committed amounts (open POs, pending documents) counted against the budget",
@@ -44,21 +44,54 @@ export const odooCaseStudies = [
       "Project budget balance shown on purchase order lines, sourced from purchase requests",
       "Analytic dashboard with per-user access to projects",
       "\"Committed Not Used\" tracking to show reserved but unspent budget",
+      "Petty cash expenses limited to the balance of an approved petty-cash line",
     ],
     challenges:
-      "Costs reached projects from several apps (Expenses, Attendance, Purchase), so overspending was only visible after the fact, and committed-but-unbilled amounts were not counted at all.",
+      "Costs reached projects from several apps (Purchase, Expenses, Attendance, Petty Cash), so overspending was only visible after the fact, and committed-but-unbilled amounts were not counted at all.",
     solution:
-      "Added a shared budget check on the analytic account that each flow calls before confirmation, calculating available budget as budget − actual − committed. Exposed the same figures on PO lines and in a per-user analytic dashboard.",
+      "Added a shared budget check on the project's analytic tag that each flow calls before confirmation, calculating available budget as budget − actual − committed. Exposed the same figures on PO lines and in a per-user analytic dashboard.",
     results:
       "Project managers see the real remaining budget at the point of entry, and entries that would overspend a project are stopped before they are posted.",
     flagship: true,
     proof: [
       "Part of a full Odoo 18 ERP rollout where I was the main developer (900+ commits, 20+ custom modules)",
-      "Budget checks run in three separate flows: Expenses, Attendance and Purchase",
+      "One shared check across purchase requests and POs, expenses, attendance and petty cash, with posted vendor bills counted as actual spend",
       "Budget checks are mentioned independently in three of the recommendations below",
     ],
     tech: ["Odoo 18", "Python", "Odoo ORM", "XML", "PostgreSQL", "Analytic Accounting"],
-    images: [],
+    // place: where the image appears on the case study page (cover | solution | result | proof)
+    images: [
+      {
+        src: "/case-studies/analytic-budget/budget-exceeded.png",
+        caption: "Expense blocked: 15,000 requested, only 3,000 available",
+        place: "cover",
+      },
+      {
+        src: "/case-studies/analytic-budget/budget-flow.png",
+        caption: "One shared check across five spend flows",
+        place: "solution",
+      },
+      {
+        src: "/case-studies/analytic-budget/po-line-budget.png",
+        caption: "Budget balance on the purchase order line",
+        place: "solution",
+      },
+      {
+        src: "/case-studies/analytic-budget/analytic-budget-items.png",
+        caption: "Planned, actual, committed and available in one view",
+        place: "result",
+      },
+      {
+        src: "/case-studies/analytic-budget/expense-project-tag.png",
+        caption: "Expense carrying the project's analytic account and tag, with receipt attached",
+        place: "proof",
+      },
+      {
+        src: "/case-studies/analytic-budget/petty-cash-insufficient.png",
+        caption: "Petty cash capped at the approved line balance",
+        place: "proof",
+      },
+    ],
   },
   {
     id: 7,

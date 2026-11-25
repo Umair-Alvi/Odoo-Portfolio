@@ -6,15 +6,24 @@ import { ArrowUpRight } from "lucide-react"
 import { odooSystems } from "@/app/data/odoo-case-studies"
 import { Icon } from "./ui"
 
+// Images can be plain paths or { src, caption, place }. Plain paths: first = cover, rest = proof.
+export function getImages(cs) {
+  return (cs.images || []).map((img, i) =>
+    typeof img === "string" ? { src: img, caption: "", place: i === 0 ? "cover" : "proof" } : img
+  )
+}
+
 // Visual header for a case study: the real screenshot if there is one,
 // otherwise a clean module "cover" (no fake screenshots).
 export function CaseStudyCover({ cs, className = "", large = false }) {
   const system = odooSystems[cs.system]
-  if (cs.images?.length) {
+  const images = getImages(cs)
+  if (images.length) {
+    const cover = images.find((im) => im.place === "cover") || images[0]
     return (
       <div className={`relative overflow-hidden bg-o-surface-2 ${className}`}>
         <Image
-          src={cs.images[0]}
+          src={cover.src}
           alt={`${cs.title} screenshot`}
           fill
           sizes={large ? "(min-width: 1024px) 1100px, 100vw" : "(min-width: 1024px) 360px, 100vw"}

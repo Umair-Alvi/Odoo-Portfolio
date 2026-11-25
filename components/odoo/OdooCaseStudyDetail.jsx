@@ -6,7 +6,7 @@ import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, ChevronRight, Github, Share2, X } from "lucide-react"
 import { odooCaseStudies, odooSystems } from "@/app/data/odoo-case-studies"
-import CaseStudyCard, { CaseStudyCover } from "./CaseStudyCard"
+import CaseStudyCard, { CaseStudyCover, getImages } from "./CaseStudyCard"
 import { Chip, Eyebrow, Reveal, btn } from "./ui"
 import { RecommendationCard } from "./Recommendation"
 import { recommendations } from "@/lib/odoo-profile"
@@ -66,10 +66,19 @@ function Lightbox({ images, index, setIndex, onClose, title }) {
         </>
       )}
       <div className="relative h-[80vh] w-full max-w-6xl">
-        <Image src={images[index]} alt={`${title} screenshot ${index + 1}`} fill className="object-contain" sizes="100vw" />
+        <Image
+          src={images[index].src}
+          alt={images[index].caption || `${title} screenshot ${index + 1}`}
+          fill
+          className="object-contain"
+          sizes="100vw"
+        />
       </div>
-      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-xs text-white/70">
-        {index + 1} / {images.length}
+      <p className="absolute inset-x-4 bottom-4 text-center text-sm text-white/80">
+        {images[index].caption && <span className="mr-3">{images[index].caption}</span>}
+        <span className="font-mono text-xs text-white/50">
+          {index + 1} / {images.length}
+        </span>
       </p>
     </motion.div>
   )
@@ -84,7 +93,34 @@ function Block({ label, children, accent }) {
   )
 }
 
-export default function OdooCaseStudyDetail({ project: cs }) {
+// A screenshot shown at its natural aspect ratio, with a caption. Click opens the lightbox.
+function Figure({ img, onOpen, priority = false, className = "" }) {
+  return (
+    <figure className={className}>
+      <button
+        type="button"
+        onClick={onOpen}
+        className="block w-full overflow-hidden rounded-xl border border-o-line bg-o-surface-2 transition-opacity hover:opacity-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-o-brand"
+        aria-label={`Enlarge: ${img.caption || "screenshot"}`}
+      >
+        <Image
+          src={img.src}
+          alt={img.caption || "Screenshot"}
+          width={1600}
+          height={900}
+          priority={priority}
+          sizes="(min-width: 1024px) 760px, 100vw"
+          className="h-auto w-full"
+        />
+      </button>
+      {img.caption && <figcaption className="mt-2.5 text-sm text-o-ink-3">{img.caption}</figcaption>}
+    </figure>
+  )
+}
+
+export default function OdooCaseStudyDetail({ project }) {
+  // Use the full case study record (captioned images etc.), not the flattened project entry
+  const cs = odooCaseStudies.find((c) => c.slug === project.slug) || project
   const system = odooSystems[cs.system]
   const [lightbox, setLightbox] = useState(null)
   const [copied, setCopied] = useState(false)
@@ -93,7 +129,12 @@ export default function OdooCaseStudyDetail({ project: cs }) {
   const nextCs = odooCaseStudies[(i + 1) % odooCaseStudies.length]
   const related = odooCaseStudies.filter((c) => c.system === cs.system && c.slug !== cs.slug).slice(0, 3)
   const vouches = recommendations.filter((r) => r.about?.includes(cs.slug))
-  const hasProof = cs.proof?.length > 0 || cs.images?.length > 0 || vouches.length > 0
+  const images = getImages(cs)
+  const indexed = images.map((img, idx) => ({ ...img, idx }))
+  const cover = indexed.find((im) => im.place === "cover")
+  const at = (place) => indexed.filter((im) => im.place === place)
+  const proofImages = at("proof")
+  const hasProof = cs.proof?.length > 0 || proofImages.length > 0 || vouches.length > 0
 
   const share = async () => {
     try {
@@ -125,15 +166,8 @@ export default function OdooCaseStudyDetail({ project: cs }) {
         </Reveal>
 
         <Reveal delay={0.05} className="mt-10">
-          {cs.images?.length ? (
-            <button
-              type="button"
-              onClick={() => setLightbox(0)}
-              className="group relative block w-full overflow-hidden rounded-xl border border-o-line"
-              aria-label="Open screenshot"
-            >
-              <CaseStudyCover cs={cs} large className="aspect-[16/8]" />
-            </button>
+          {cover ? (
+            <Figure img={cover} onOpen={() => setLightbox(cover.idx)} priority />
           ) : (
             <CaseStudyCover cs={cs} large className="aspect-[16/6] rounded-xl border border-o-line" />
           )}
@@ -159,12 +193,18 @@ export default function OdooCaseStudyDetail({ project: cs }) {
                   </li>
                 ))}
               </ul>
+              {at("solution").map((img) => (
+                <Figure key={img.src} img={img} onOpen={() => setLightbox(img.idx)} className="mt-8" />
+              ))}
             </Block>
 
             <Reveal className="rounded-xl border border-o-teal/30 bg-o-teal/5 p-6">
               <h2 className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-o-teal">03 · Result</h2>
               <p className="mt-3 text-base leading-relaxed text-o-ink">{cs.results}</p>
             </Reveal>
+            {at("result").map((img) => (
+              <Figure key={img.src} img={img} onOpen={() => setLightbox(img.idx)} />
+            ))}
 
             {hasProof && (
               <Block label="04 · Proof">
@@ -179,24 +219,16 @@ export default function OdooCaseStudyDetail({ project: cs }) {
                   </ul>
                 )}
 
-                {cs.images?.length > 0 && (
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {cs.images.map((src, idx) => (
-                      <button
-                        key={src}
-                        type="button"
-                        onClick={() => setLightbox(idx)}
-                        className="relative aspect-[4/3] overflow-hidden rounded-lg border border-o-line bg-o-surface-2 transition-opacity hover:opacity-90"
-                        aria-label={`Open screenshot ${idx + 1}`}
-                      >
-                        <Image src={src} alt={`${cs.title} screenshot ${idx + 1}`} fill sizes="300px" className="object-cover object-top" />
-                      </button>
+                {proofImages.length > 0 && (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    {proofImages.map((img) => (
+                      <Figure key={img.src} img={img} onOpen={() => setLightbox(img.idx)} />
                     ))}
                   </div>
                 )}
 
                 {vouches.length > 0 && (
-                  <div className={cs.images?.length ? "mt-8" : ""}>
+                  <div className={proofImages.length ? "mt-8" : ""}>
                     <p className="mb-4 text-sm font-medium text-o-ink">From people who worked with me on this</p>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       {vouches.map((r) => (
@@ -283,7 +315,7 @@ export default function OdooCaseStudyDetail({ project: cs }) {
       <AnimatePresence>
         {lightbox !== null && (
           <Lightbox
-            images={cs.images}
+            images={images}
             index={lightbox}
             setIndex={(fn) => setLightbox((v) => (typeof fn === "function" ? fn(v) : fn))}
             onClose={() => setLightbox(null)}
